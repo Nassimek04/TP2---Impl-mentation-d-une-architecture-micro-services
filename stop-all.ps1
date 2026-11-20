@@ -1,7 +1,7 @@
-# Stops the four e-commerce services by their listening ports.
+# Stops the e-commerce services by their listening ports.
 # Also removes the scheduled tasks used to launch them in the background.
 # Usage: .\stop-all.ps1
-$ports = @(8888, 8082, 8081, 8761)
+$ports = @(9999, 8888, 8083, 8082, 8081, 8761)
 foreach ($port in $ports) {
     $listeners = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
     if (-not $listeners) {
@@ -18,7 +18,7 @@ foreach ($port in $ports) {
     }
 }
 
-foreach ($name in 'ecom-gateway-service', 'ecom-inventory-service', 'ecom-customer-service', 'ecom-discovery-service') {
+foreach ($name in 'ecom-gateway-service', 'ecom-billing-service', 'ecom-inventory-service', 'ecom-customer-service', 'ecom-config-service', 'ecom-discovery-service') {
     $task = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
     if ($task) {
         Stop-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
